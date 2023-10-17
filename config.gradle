@@ -1,0 +1,41 @@
+ext {
+    publishScript = 'https://raw.githubusercontent.com/yanzhenjie/GradleToMaven/master/publish.gradle'
+
+    plugin = [
+        javaLibrary   : 'java-library',
+        javaPlugin    : 'java-gradle-plugin',
+        android       : 'com.android.application',
+        androidLibrary: 'com.android.library',
+        andServer     : 'com.yanzhenjie.andserver'
+    ]
+
+    androidBuild = [
+        applicationId          : 'com.yanzhenjie.andserver.sample',
+        compileSdkVersion      : 30,
+
+        libraryMinSdkVersion   : 9,
+        libraryTargetSdkVersion: 30,
+        sampleMinSdkVersion    : 14,
+        sampleTargetSdkVersion : 30
+    ]
+
+    deps = [
+        android: [
+            plugin    : 'com.android.tools.build:gradle:4.2.2',
+            annotation: 'androidx.annotation:annotation:1.1.0',
+            compat    : 'androidx.appcompat:appcompat:1.1.0',
+            material  : 'com.google.android.material:material:1.1.0',
+        ],
+
+        apache : [
+            lang       : 'org.apache.commons:commons-lang3:3.12.0',
+            collections: 'org.apache.commons:commons-collections4:4.4',
+            httpcore   : "com.yanzhenjie.apache:httpcore:4.4.16",
+            fileupload : "com.yanzhenjie.apache:fileupload:1.4",
+        ],
+
+        poet   : 'com.squareup:javapoet:1.12.1',
+        loading: 'com.yanzhenjie:loading:1.0.0',
+        json   : 'com.alibaba:fastjson:1.1.71.android'
+    ]
+}

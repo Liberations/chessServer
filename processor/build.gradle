@@ -1,0 +1,16 @@
+apply plugin: plugin.javaLibrary
+
+compileJava {
+    sourceCompatibility = JavaVersion.VERSION_1_8
+    targetCompatibility = JavaVersion.VERSION_1_8
+}
+
+dependencies {
+    api project(':annotation')
+
+    implementation deps.poet
+    implementation deps.apache.lang
+    implementation deps.apache.collections
+}
+
+//apply from: publishScript

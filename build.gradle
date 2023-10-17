@@ -1,0 +1,30 @@
+apply from: 'config.gradle'
+
+buildscript {
+    repositories {
+        maven { url "https://maven.aliyun.com/repository/public" } //jcenter
+        maven { url "https://maven.aliyun.com/repository/google" } //google
+        mavenLocal()
+        google()
+        mavenCentral()
+    }
+
+    dependencies {
+        classpath 'com.android.tools.build:gradle:4.2.2'
+        classpath 'com.yanzhenjie.andserver:plugin:2.1.12'
+    }
+}
+
+allprojects {
+    repositories {
+        maven { url "https://maven.aliyun.com/repository/public" } //jcenter
+        maven { url "https://maven.aliyun.com/repository/google" } //google
+        mavenLocal()
+        google()
+        mavenCentral()
+    }
+}
+
+task clean(type: Delete) {
+    delete rootProject.buildDir
+}

@@ -1,0 +1,17 @@
+apply plugin: plugin.javaLibrary
+apply plugin: plugin.javaPlugin
+
+compileJava {
+    sourceCompatibility = JavaVersion.VERSION_1_8
+    targetCompatibility = JavaVersion.VERSION_1_8
+}
+
+dependencies {
+    compileOnly gradleApi()
+    api project(':annotation')
+
+    implementation deps.android.plugin
+    implementation deps.poet
+}
+
+//apply from: publishScript

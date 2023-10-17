@@ -1,0 +1,14 @@
+.cxx
+.DS_Store
+.externalNativeBuild
+.gradle
+.vscode
+/build
+/captures
+/output
+/.gradle
+/.idea
+local.properties
+*.iml
+*.log
+*.apk
