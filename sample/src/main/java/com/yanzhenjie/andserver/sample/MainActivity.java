@@ -155,6 +155,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             mRootUrl = "http://" + ip + ":5000/";
             addressList.add(mRootUrl);
             addressList.add("http://" + ip + ":5000/login.html");
+            addressList.add("http://" + ip + ":5000/"+"/user/getBestMove");
+            addressList.add("fen 4k4/4C4/8C/7n1/9/6B2/9/4K4/9/9  w - - 0 1");
+            addressList.add("speed 20");
             mTvMessage.setText(TextUtils.join("\n", addressList));
         } else {
             mRootUrl = null;

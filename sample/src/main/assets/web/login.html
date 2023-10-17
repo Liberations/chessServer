@@ -6,26 +6,26 @@
     <meta name="format-detection" content="telephone=no"/>
     <link rel="stylesheet" type="text/css" href="css/login.css">
 
-    <title>Sign In</title>
+    <title>皮卡鱼引擎测试</title>
 
 </head>
 <body class="sec_body">
 <div class="center_father">
-    <h1 class="center" style="margin:0 0;font-size:x-large;padding:0;">Sign In</h1>
+    <h1 class="center" style="margin:0 0;font-size:x-large;padding:0;">皮卡鱼引擎测试</h1>
 </div>
-<form id="form1" method="post" action="/user/login">
+<form id="form1" method="post" action="/user/getBestMove">
     <table align="center" cellpadding="0" cellspacing="0">
         <tr>
-            <td width="100" align="right">Account:&nbsp;&nbsp;</td>
-            <td width="276"><input name="account" type="text" id="account" value="123"/></td>
+            <td width="100" align="right">FEN码:&nbsp;&nbsp;</td>
+            <td width="276"><input name="fen" type="text" id="fen" value="P3c2PP/3CnP3/3aka3/9/9/9/9/8B/8p/p4KB2 w - - 0 1"/></td>
         </tr>
         <tr>
             <td width="100">&nbsp;&nbsp;</td>
             <td width="276">&nbsp;&nbsp;</td>
         </tr>
         <tr>
-            <td align="right">Password:&nbsp;&nbsp;</td>
-            <td><input name="password" type="password" id="password" value="123"/></td>
+            <td align="right">深度:&nbsp;&nbsp;</td>
+            <td><input name="speed" type="text" id="speed" value="20"/></td>
         </tr>
         <tr>
             <td width="100">&nbsp;&nbsp;</td>
@@ -33,11 +33,11 @@
         </tr>
         <tr>
             <td colspan="2" align="center">
-                <input type="submit" name="Submit" value="Sign In"/>
+                <input type="submit" name="Submit" value="查询"/>
             </td>
         </tr>
     </table>
-    <p>Account:&nbsp;123, Password:&nbsp;123</p>
+    <p>FEN码:&nbsp;标准FEN, 深度:&nbsp;查询深度越大越慢</p>
 </form>
 </body>
 </html>

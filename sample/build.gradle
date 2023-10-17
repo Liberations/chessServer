@@ -4,12 +4,25 @@ apply plugin: plugin.andServer
 android {
     compileSdkVersion androidBuild.compileSdkVersion
 
+    signingConfigs {
+        r1295 {
+            keyAlias 'upload'
+            keyPassword 'android'
+            storeFile file('..\\cert\\keystore.jks')
+            storePassword 'android'
+        }
+
+    }
+
     defaultConfig {
         applicationId androidBuild.applicationId
         minSdkVersion androidBuild.sampleMinSdkVersion
         targetSdkVersion androidBuild.sampleTargetSdkVersion
         versionCode 1
         versionName POM_VERSION
+        ndk {
+            abiFilters 'arm64-v8a'
+        }
     }
 
     compileOptions {
@@ -20,6 +33,21 @@ android {
     sourceSets {
         main {
             jniLibs.srcDirs = ['src/main/jniLibs']
+        }
+    }
+
+    buildTypes {
+        release {
+            signingConfig signingConfigs.r1295
+            ndk {
+                abiFilters 'arm64-v8a'
+            }
+        }
+        debug {
+            signingConfig signingConfigs.r1295
+            ndk {
+                abiFilters 'arm64-v8a'
+            }
         }
     }
 }

@@ -55,11 +55,6 @@
             android:layout_height="wrap_content"
             android:text="@string/stop_server"
             android:visibility="gone"/>
-        <Button
-            android:id="@+id/btnStartEngine"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="初始化引擎" />
 
         <Button
             android:id="@+id/btn_browse"
