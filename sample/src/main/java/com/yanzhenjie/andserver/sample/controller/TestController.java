@@ -40,6 +40,7 @@ import com.yanzhenjie.andserver.http.HttpResponse;
 import com.yanzhenjie.andserver.http.cookie.Cookie;
 import com.yanzhenjie.andserver.http.multipart.MultipartFile;
 import com.yanzhenjie.andserver.http.session.Session;
+import com.yanzhenjie.andserver.sample.MainActivity;
 import com.yanzhenjie.andserver.sample.component.LoginInterceptor;
 import com.yanzhenjie.andserver.sample.model.UserInfo;
 import com.yanzhenjie.andserver.sample.util.FileUtils;
@@ -69,6 +70,7 @@ class TestController {
     private static String bestMove = "";
     private Thread thread;
     private Thread engineThread;
+
     public TestController() {
         Log.d(TAG, "TestController: ");
         engineThread = new Thread(new Runnable() {
@@ -86,13 +88,17 @@ class TestController {
             process = Runtime.getRuntime().exec(LIB_PATH + "/libpikafish.so");
             OutputStream out = process.getOutputStream();
             Thread.sleep(1000);
-            out.write("setoption name Threads value 6\n".getBytes());
+            out.write("setoption name Threads value 16\n".getBytes());
             out.flush();
             out.write(("setoption name EvalFile value " + ENGIN_PATH + "\n").getBytes());
             out.flush();
             out.write("setoption name UCI_ShowWDL value false\n".getBytes());
             out.flush();
             out.write("setoption name Clear Hash\n".getBytes());
+            out.flush();
+            out.write("setoption name Skill Level value 20\n".getBytes());
+            out.flush();
+            out.write("setoption name Hash value 2048\n".getBytes());
             out.flush();
             // 获取命令的输出流
             InputStream inputStream = process.getInputStream();
@@ -103,7 +109,8 @@ class TestController {
             // 逐行读取输出内容
             while ((line = reader.readLine()) != null) {
                 // 处理每一行的输出
-                Log.d(TAG, "cmd:" + line);
+                //Log.d(TAG, "cmd:" + line);
+                MainActivity.mainActivity.printLog(line);
                 if (line.startsWith("bestmove") && line.length() > 12) {
                     try {
                         bestMove = line.substring(9, 13);
@@ -121,6 +128,21 @@ class TestController {
         }
     }
 
+    @PostMapping("/excCmd")
+    public String excCmd(@RequestParam(name = "cmd", defaultValue = "setoption name UCI_ShowWDL value false") String cmd) {
+        try {
+            if(TextUtils.isEmpty(cmd)||!cmd.startsWith("setoption")){
+                return "-1";
+            }
+            OutputStream out = process.getOutputStream();
+            out.write((cmd+"\n").getBytes());
+            out.flush();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return "0";
+    }
+
     @PostMapping("/getBestMove")
     public String getBestMove(@RequestParam(name = "fen") String fen,
                               @RequestParam(name = "speed", defaultValue = "10") String speed) {
@@ -133,6 +155,10 @@ class TestController {
                 public void run() {
                     try {
                         Thread.sleep(15000);
+                        OutputStream out = process.getOutputStream();
+                        out.write("stop\n".getBytes());
+                        out.flush();
+                        Thread.sleep(1000);
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -145,25 +171,21 @@ class TestController {
                 e.printStackTrace();
             }
         }
-        Log.d(TAG, "return bestMove"+bestMove);
+        Log.d(TAG, "getBestMove res" + bestMove);
         return bestMove;
     }
 
     private void getMove(String fen, String speed) {
         try {
             OutputStream out = process.getOutputStream();
-            out.write("setoption name Threads value 6\n".getBytes());
-            out.flush();
-            out.write(("setoption name EvalFile value " + ENGIN_PATH + "\n").getBytes());
-            out.flush();
-            out.write("setoption name UCI_ShowWDL value true\n".getBytes());
-            out.flush();
-            out.write("setoption name Clear Hash\n".getBytes());
-            out.flush();
+//            out.write("stop\n".getBytes());
+//            out.flush();
             out.write(("position fen " + fen + "\n").getBytes());
+            out.flush();
             out.write(("go depth " + speed + "\n").getBytes());
             out.flush();
         } catch (Exception e) {
+            initEngine();
             Log.d(TAG, "getMove error: " + e);
             e.printStackTrace();
         }
@@ -171,6 +193,7 @@ class TestController {
 
     public static boolean validateFEN(String fen) {
         if (TextUtils.isEmpty(fen)) return false;
+        if(fen.startsWith("9/9/9/9/9/9/9/9/9/9"))return false;
         String[] fenFields = fen.split(" ");
 
 
@@ -189,6 +212,8 @@ class TestController {
                 return false;
             }
         }
+
+
 
         return true; // FEN码合法
     }

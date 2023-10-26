@@ -26,6 +26,7 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -55,17 +56,20 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private Button mBtnStop;
     private Button mBtnBrowser;
     private TextView mTvMessage;
+    private EditText etLog;
 
     private LoadingDialog mDialog;
     private String mRootUrl;
     private static final String TAG = "testServer";
     public static String LIB_PATH = "";
     public static String ENGIN_PATH = "";
+    public static MainActivity mainActivity;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mainActivity = this;
         setContentView(R.layout.activity_main);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -73,7 +77,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mBtnStop = findViewById(R.id.btn_stop);
         mBtnBrowser = findViewById(R.id.btn_browse);
         mTvMessage = findViewById(R.id.tv_message);
-
+        etLog = findViewById(R.id.etLog);
         mBtnStart.setOnClickListener(this);
         mBtnStop.setOnClickListener(this);
         mBtnBrowser.setOnClickListener(this);
@@ -155,7 +159,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             mRootUrl = "http://" + ip + ":5000/";
             addressList.add(mRootUrl);
             addressList.add("http://" + ip + ":5000/login.html");
-            addressList.add("http://" + ip + ":5000/"+"/user/getBestMove");
+            addressList.add("http://" + ip + ":5000"+"/user/getBestMove");
             addressList.add("fen 4k4/4C4/8C/7n1/9/6B2/9/4K4/9/9  w - - 0 1");
             addressList.add("speed 20");
             mTvMessage.setText(TextUtils.join("\n", addressList));
@@ -202,5 +206,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         if (mDialog != null && mDialog.isShowing()) {
             mDialog.dismiss();
         }
+    }
+
+    public void printLog(String log){
+        etLog.post(new Runnable() {
+            @Override
+            public void run() {
+                etLog.requestFocus();
+                etLog.append(log);
+                etLog.append("\n");
+                etLog.setSelection(etLog.getText().length());
+
+            }
+        });
     }
 }

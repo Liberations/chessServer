@@ -10,7 +10,7 @@ ext {
     ]
 
     androidBuild = [
-        applicationId          : 'com.yanzhenjie.andserver.sample',
+        applicationId          : 'com.xiangqi.pikafish',
         compileSdkVersion      : 30,
 
         libraryMinSdkVersion   : 9,
