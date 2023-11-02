@@ -6,7 +6,8 @@ ext {
         javaPlugin    : 'java-gradle-plugin',
         android       : 'com.android.application',
         androidLibrary: 'com.android.library',
-        andServer     : 'com.yanzhenjie.andserver'
+        andServer     : 'com.yanzhenjie.andserver',
+        stringFog     : 'stringfog'
     ]
 
     androidBuild = [
