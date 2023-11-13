@@ -15,7 +15,6 @@
  */
 package com.yanzhenjie.andserver.sample;
 
-import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
@@ -35,13 +34,7 @@ import androidx.appcompat.widget.Toolbar;
 import com.yanzhenjie.andserver.sample.util.AssetUtils;
 import com.yanzhenjie.loading.dialog.LoadingDialog;
 
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.nio.charset.StandardCharsets;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -97,7 +90,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Log.d(TAG, "引擎路径: " + ENGIN_PATH);
         // startServer;
         AssetUtils.extractAssetFile(this, "pikafish.nnue");
-        mBtnStart.performClick();
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             Intent intent = new Intent();
             String packageName = getPackageName();
@@ -108,7 +100,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 startActivity(intent);
             }
         }
-
+        mBtnStart.performClick();
 
     }
 
@@ -158,10 +150,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             List<String> addressList = new LinkedList<>();
             mRootUrl = "http://" + ip + ":5000/";
             addressList.add(mRootUrl);
-            addressList.add("http://" + ip + ":5000/login.html");
             addressList.add("http://" + ip + ":5000"+"/user/getBestMove");
             addressList.add("fen 4k4/4C4/8C/7n1/9/6B2/9/4K4/9/9  w - - 0 1");
-            addressList.add("speed 20");
+            addressList.add("思考 2秒");
             mTvMessage.setText(TextUtils.join("\n", addressList));
         } else {
             mRootUrl = null;

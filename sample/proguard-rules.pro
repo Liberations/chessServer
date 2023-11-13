@@ -1,3 +1,6 @@
+-obfuscationdictionary dict.txt
+-classobfuscationdictionary dict.txt
+-packageobfuscationdictionary dict.txt
 -optimizationpasses 5
 -ignorewarnings
 -dontusemixedcaseclassnames
@@ -59,3 +62,4 @@
 
 -dontwarn com.alibaba.fastjson.**
 -keep class com.alibaba.fastjson.**{*;}
+#-keep class com.yanzhenjie.andserver.sample.controller.TestController

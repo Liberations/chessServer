@@ -68,7 +68,6 @@ class TestController {
     private static final String TAG = "testServer";
     private static Process process;
     private static String bestMove = "";
-    private Thread thread;
     private Thread engineThread;
 
     public TestController() {
@@ -88,7 +87,7 @@ class TestController {
             process = Runtime.getRuntime().exec(LIB_PATH + "/libpikafish.so");
             OutputStream out = process.getOutputStream();
             Thread.sleep(1000);
-            out.write("setoption name Threads value 16\n".getBytes());
+            out.write("setoption name Threads value 6\n".getBytes());
             out.flush();
             out.write(("setoption name EvalFile value " + ENGIN_PATH + "\n").getBytes());
             out.flush();
@@ -100,27 +99,6 @@ class TestController {
             out.flush();
             out.write("setoption name Hash value 2048\n".getBytes());
             out.flush();
-            // 获取命令的输出流
-            InputStream inputStream = process.getInputStream();
-            // 创建输入流的读取器
-            BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
-
-            String line;
-            // 逐行读取输出内容
-            while ((line = reader.readLine()) != null) {
-                // 处理每一行的输出
-                //Log.d(TAG, "cmd:" + line);
-                MainActivity.mainActivity.printLog(line);
-                if (line.startsWith("bestmove") && line.length() > 12) {
-                    try {
-                        bestMove = line.substring(9, 13);
-                        Log.d(TAG, "得到bestMove" + bestMove);
-                        thread.interrupt();
-                    } catch (Exception e) {
-                    }
-
-                }
-            }
             process.waitFor();
         } catch (Exception e) {
             Log.d(TAG, "run: " + e);
@@ -145,28 +123,34 @@ class TestController {
 
     @PostMapping("/getBestMove")
     public String getBestMove(@RequestParam(name = "fen") String fen,
-                              @RequestParam(name = "speed", defaultValue = "10") String speed) {
+                              @RequestParam(name = "speed", defaultValue = "0.1") String speed) {
         Log.d(TAG, "getBestMove: fen" + fen + " speed" + speed);
         bestMove = "nobestmove";
+        long startTime = System.currentTimeMillis();
         if (validateFEN(fen)) {
             getMove(fen, speed);
-            thread = new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    try {
-                        Thread.sleep(15000);
-                        OutputStream out = process.getOutputStream();
-                        out.write("stop\n".getBytes());
-                        out.flush();
-                        Thread.sleep(1000);
-                    } catch (Exception e) {
-                        e.printStackTrace();
+            try {
+                // 获取命令的输出流
+                InputStream inputStream = process.getInputStream();
+                // 创建输入流的读取器
+                BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
+
+                String line;
+                // 逐行读取输出内容
+                while ((line = reader.readLine()) != null) {
+                    // 处理每一行的输出
+                    Log.d(TAG, "cmd:" + line);
+                    MainActivity.mainActivity.printLog(line);
+                    if (line.startsWith("bestmove") && line.length() > 12) {
+                        try {
+                            bestMove = line.substring(9, 13);
+                            Log.d(TAG, "得到bestMove" + bestMove);
+                            break;
+                        } catch (Exception e) {
+                        }
+
                     }
                 }
-            });
-            try {
-                thread.start();
-                thread.join();
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -182,7 +166,7 @@ class TestController {
 //            out.flush();
             out.write(("position fen " + fen + "\n").getBytes());
             out.flush();
-            out.write(("go depth " + speed + "\n").getBytes());
+            out.write(("go movetime " + Float.valueOf(speed)*1000 + "\n").getBytes());
             out.flush();
         } catch (Exception e) {
             initEngine();
