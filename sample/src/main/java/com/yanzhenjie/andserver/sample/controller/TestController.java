@@ -59,9 +59,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
-/**
- * Created by Zhenjie Yan on 2018/6/9.
- */
+
 @RestController
 @RequestMapping(path = "/user")
 class TestController {
@@ -83,7 +81,7 @@ class TestController {
 
     private void initEngine() {
         try {
-            // 执行Shell命令
+            // 执行Shell命令、
             process = Runtime.getRuntime().exec(LIB_PATH + "/libpikafish.so");
             OutputStream out = process.getOutputStream();
             Thread.sleep(1000);
